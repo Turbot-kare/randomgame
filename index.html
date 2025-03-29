@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1/2^n</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 20px 0;
+        }
+        button {
+            font-size: 20px;
+            padding: 30px;
+            width: 100%;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        #score {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .clear-screen {
+            font-size: 32px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="game-screen">
+            <h1>1/2^n</h1>
+            <div class="buttons">
+                <button id="buttonA">ボタンA</button>
+                <button id="buttonB">ボタンB</button>
+            </div>
+            <p id="score">あたり回数: 0</p>
+        </div>
+        <div id="clear-screen" class="hidden">
+            <p class="clear-screen">クリア！現地はポスト！</p>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let maxScore = 5;
+        let gameInProgress = true;
+
+        const buttonA = document.getElementById("buttonA");
+        const buttonB = document.getElementById("buttonB");
+        const scoreDisplay = document.getElementById("score");
+        const gameScreen = document.getElementById("game-screen");
+        const clearScreen = document.getElementById("clear-screen");
+
+        function getRandomOutcome() {
+            return Math.random() < 0.5;  // 50%で当たり
+        }
+
+        function resetGame() {
+            score = 0;
+            gameInProgress = true;
+            scoreDisplay.textContent = "あたり回数: " + score;
+            gameScreen.style.display = "block";
+            clearScreen.style.display = "none";
+        }
+
+        function handleClick(isButtonA) {
+            if (!gameInProgress) return;
+
+            const isWinner = getRandomOutcome(); // ランダムに当たりか外れか決定
+
+            if (isWinner) {
+                score++;
+                scoreDisplay.textContent = "あたり回数: " + score;
+                if (score >= maxScore) {
+                    // クリア
+                    gameInProgress = false;
+                    gameScreen.style.display = "none";
+                    clearScreen.style.display = "block";
+                }
+            } else {
+                // 外れた場合
+                gameInProgress = false;
+                alert("残念！やり直し！");
+                resetGame();
+            }
+        }
+
+        buttonA.addEventListener("click", () => handleClick(true));
+        buttonB.addEventListener("click", () => handleClick(false));
+
+        // キーボードのAとBキーを押した時にも反応する
+        document.addEventListener("keydown", (event) => {
+            if (!gameInProgress) return;
+
+            if (event.key === 'a' || event.key === 'A') {
+                handleClick(true); // ボタンAがクリックされたのと同じ処理
+            }
+            if (event.key === 'b' || event.key === 'B') {
+                handleClick(false); // ボタンBがクリックされたのと同じ処理
+            }
+        });
+
+        // ゲーム開始
+        resetGame();
+    </script>
+</body>
+</html>
