@@ -58,10 +58,10 @@
                 <button id="buttonA">ボタンA</button>
                 <button id="buttonB">ボタンB</button>
             </div>
-            <p id="score">あたり回数: 0</p>
+            <p id="score">当たった回数: 0</p>
         </div>
         <div id="clear-screen" class="hidden">
-            <p class="clear-screen">クリア！現地はポスト！</p>
+            <p class="clear-screen">クリア！</p>
         </div>
     </div>
 
@@ -77,13 +77,13 @@
         const clearScreen = document.getElementById("clear-screen");
 
         function getRandomOutcome() {
-            return Math.random() < 0.5;  // 50%で当たり
+            return Math.random() < 0.5; 
         }
 
         function resetGame() {
             score = 0;
             gameInProgress = true;
-            scoreDisplay.textContent = "あたり回数: " + score;
+            scoreDisplay.textContent = "当たった回数: " + score;
             gameScreen.style.display = "block";
             clearScreen.style.display = "none";
         }
@@ -91,19 +91,19 @@
         function handleClick(isButtonA) {
             if (!gameInProgress) return;
 
-            const isWinner = getRandomOutcome(); // ランダムに当たりか外れか決定
+            const isWinner = getRandomOutcome();
 
             if (isWinner) {
                 score++;
-                scoreDisplay.textContent = "あたり回数: " + score;
+                scoreDisplay.textContent = "当たった回数: " + score;
                 if (score >= maxScore) {
-                    // クリア
+                    
                     gameInProgress = false;
                     gameScreen.style.display = "none";
                     clearScreen.style.display = "block";
                 }
             } else {
-                // 外れた場合
+                
                 gameInProgress = false;
                 alert("残念！やり直し！");
                 resetGame();
@@ -113,19 +113,19 @@
         buttonA.addEventListener("click", () => handleClick(true));
         buttonB.addEventListener("click", () => handleClick(false));
 
-        // キーボードのAとBキーを押した時にも反応する
+        
         document.addEventListener("keydown", (event) => {
             if (!gameInProgress) return;
 
             if (event.key === 'a' || event.key === 'A') {
-                handleClick(true); // ボタンAがクリックされたのと同じ処理
+                handleClick(true); 
             }
             if (event.key === 'b' || event.key === 'B') {
-                handleClick(false); // ボタンBがクリックされたのと同じ処理
+                handleClick(false); 
             }
         });
 
-        // ゲーム開始
+        
         resetGame();
     </script>
 </body>
